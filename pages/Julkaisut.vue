@@ -64,9 +64,7 @@
       </div>
     </div>
 
-    <hr />
-
-    <h2>Kaikki julkaisut</h2>
+    <p class="text-2xl text-m05beige">Kaikki julkaisut</p>
     <div v-if="posts.length > 0" class="post-list">
       <div
         v-for="p in posts"
@@ -351,7 +349,7 @@ onMounted(() => {
 
 .button {
   padding: 0.75rem 1.5rem;
-  background-color: #4b633e;
+  background-color: #3b552e;
   color: #d7c6a0;
   border: none;
   border-radius: 4px;

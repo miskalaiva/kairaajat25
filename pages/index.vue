@@ -29,8 +29,9 @@
               class="rounded-md w-full h-48 object-cover"
             />
           </div>
-          <h3 class="font-semibold text-lg">{{ julkaisu.publisher }}</h3>
-          <p class="mt-1 text-sm">{{ julkaisu.text }}</p>
+
+          <p class="mt-1">{{ julkaisu.text }}</p>
+          <p class="font-semibold mt-4">-{{ julkaisu.publisher }}</p>
         </div>
       </div>
       <p v-else class="text-m05greenLight italic">Ei julkaisuja.</p>
