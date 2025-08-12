@@ -30,7 +30,7 @@
             />
           </div>
 
-          <p class="mt-1">{{ julkaisu.text }}</p>
+          <p class="mt-1 break-words">{{ julkaisu.text }}</p>
           <p class="font-semibold mt-4">-{{ julkaisu.publisher }}</p>
         </div>
       </div>
