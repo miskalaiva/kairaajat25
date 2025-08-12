@@ -16,6 +16,8 @@ export default defineNuxtConfig({
       firebaseMessagingSenderId:
         process.env.NUXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
       firebaseAppId: process.env.NUXT_PUBLIC_FIREBASE_APP_ID,
+      // Tässä on uusi rivi, joka lukee salaisen avaimen .env-tiedostosta
+      secretKey: process.env.NUXT_PUBLIC_SECRET_KEY,
     },
   },
 });

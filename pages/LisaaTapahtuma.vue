@@ -80,20 +80,23 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
-// Poista vanha rivi: import { db } from "@/utils/firebase";
+
 // Hae Firebase-instanssi Nuxtin kautta
 const { $db } = useNuxtApp();
+// Hae Nuxtin runtimeConfig
+const config = useRuntimeConfig();
 
 // --- Kirjautumisen tilat ---
 const key = ref("");
 const error = ref(null);
 const isLoggedIn = ref(false);
 const router = useRouter();
-const correctKey = "1234";
+// Korvaa kovakoodattu arvo ympäristömuuttujasta luetulla arvolla
+const correctKey = config.public.secretKey;
 
 const loginWithKey = () => {
   error.value = null;
-  if (key.value === correctKey) {
+  if (key.value == correctKey) {
     isLoggedIn.value = true;
     localStorage.setItem("isLoggedIn", "true");
   } else {
