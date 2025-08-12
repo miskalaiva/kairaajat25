@@ -84,7 +84,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { ref, onMounted } from "vue";
-import { db } from "@/utils/firebase";
+// Poista vanha rivi, koska se ei toimi: import { db } from "@/utils/firebase";
 import {
   collection,
   query,
@@ -92,6 +92,9 @@ import {
   limit,
   onSnapshot,
 } from "firebase/firestore";
+
+// Hae Firebase-instanssit Nuxtin kautta
+const { $db } = useNuxtApp();
 
 const router = useRouter();
 
@@ -138,7 +141,8 @@ const formatDate = (dateValue, includeTime = false) => {
 // Funktio viimeisimpien julkaisujen hakemiseksi
 const fetchLatestPosts = () => {
   const q = query(
-    collection(db, "posts"),
+    // Korjattu käyttämään $db-instanssia
+    collection($db, "posts"),
     orderBy("createdAt", "desc"),
     limit(3)
   );
@@ -153,7 +157,11 @@ const fetchLatestPosts = () => {
 
 // Funktio tapahtumien hakemiseksi ja suodattamiseksi
 const fetchEvents = () => {
-  const q = query(collection(db, "events"), orderBy("date", "asc"));
+  const q = query(
+    // Korjattu käyttämään $db-instanssia
+    collection($db, "events"),
+    orderBy("date", "asc")
+  );
   const today = new Date().toISOString().slice(0, 10);
 
   onSnapshot(q, (snapshot) => {

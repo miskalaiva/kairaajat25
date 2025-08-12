@@ -80,8 +80,9 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
-// Varmista, että polku Firebase-konfiguraatioon on oikein
-import { db } from "@/utils/firebase";
+// Poista vanha rivi: import { db } from "@/utils/firebase";
+// Hae Firebase-instanssi Nuxtin kautta
+const { $db } = useNuxtApp();
 
 // --- Kirjautumisen tilat ---
 const key = ref("");
@@ -128,7 +129,7 @@ const submitEvent = async () => {
   }
 
   try {
-    await addDoc(collection(db, "events"), {
+    await addDoc(collection($db, "events"), {
       name: event.value.name,
       date: event.value.date,
       description: event.value.description,
@@ -147,7 +148,7 @@ const submitEvent = async () => {
 const deleteEvent = async (id) => {
   if (confirm("Haluatko varmasti poistaa tämän tapahtuman?")) {
     try {
-      await deleteDoc(doc(db, "events", id));
+      await deleteDoc(doc($db, "events", id));
     } catch (e) {
       console.error("Virhe tapahtuman poistamisessa: ", e);
       alert("Virhe tapahtuman poistamisessa.");
@@ -156,7 +157,7 @@ const deleteEvent = async (id) => {
 };
 
 const fetchEvents = () => {
-  const q = query(collection(db, "events"), orderBy("createdAt", "desc"));
+  const q = query(collection($db, "events"), orderBy("createdAt", "desc"));
   onSnapshot(q, (snapshot) => {
     events.value = snapshot.docs.map((d) => ({
       id: d.id,

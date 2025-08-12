@@ -34,8 +34,11 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { db } from "@/utils/firebase";
+// Poista vanha rivi: import { db } from "@/utils/firebase";
 import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
+
+// Hae Firebase-instanssi Nuxtin kautta
+const { $db } = useNuxtApp();
 
 // Tapahtuman tilat
 const tulevatTapahtumat = ref([]);
@@ -43,7 +46,11 @@ const menneetTapahtumat = ref([]);
 
 // Funktio kaikkien tapahtumien hakemiseksi ja suodattamiseksi
 const fetchEvents = () => {
-  const q = query(collection(db, "events"), orderBy("date", "asc"));
+  const q = query(
+    // Korjattu käyttämään $db-instanssia
+    collection($db, "events"),
+    orderBy("date", "asc")
+  );
 
   const today = new Date().toISOString().slice(0, 10);
 

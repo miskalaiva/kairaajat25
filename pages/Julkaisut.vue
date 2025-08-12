@@ -91,7 +91,7 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-import { db } from "@/utils/firebase";
+// Poista vanha rivi, koska se ei toimi: import { db } from "@/utils/firebase";
 import {
   collection,
   addDoc,
@@ -99,6 +99,9 @@ import {
   query,
   orderBy,
 } from "firebase/firestore";
+
+// Hae Firebase-instanssit Nuxtin kautta
+const { $db } = useNuxtApp();
 
 const post = ref({
   publisher: "",
@@ -139,7 +142,7 @@ const submitPost = async () => {
   try {
     const base64Images = await convertImagesToBase64();
 
-    await addDoc(collection(db, "posts"), {
+    await addDoc(collection($db, "posts"), {
       publisher: post.value.publisher,
       text: post.value.text,
       images: base64Images,
@@ -271,7 +274,7 @@ const formatDate = (dateValue, includeTime = false) => {
 };
 
 const fetchPosts = () => {
-  const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
+  const q = query(collection($db, "posts"), orderBy("createdAt", "desc"));
 
   onSnapshot(q, (snapshot) => {
     posts.value = snapshot.docs.map((doc) => ({
