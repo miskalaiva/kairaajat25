@@ -1,10 +1,6 @@
 <template>
   <div>
     <Header />
-    <slot />
+    <NuxtPage />
   </div>
 </template>
-
-<script setup>
-import Header from "~/components/Header.vue";
-</script>

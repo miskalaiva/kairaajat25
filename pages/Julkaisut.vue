@@ -80,8 +80,9 @@
             class="post-image"
           />
         </div>
+        <p class="text-sm">{{ formatDate(p.createdAt, true) }}</p>
         <p class="py-4">{{ p.text }}</p>
-        <h3>-{{ p.publisher }}</h3>
+        <h3 class="font-semibold">-{{ p.publisher }}</h3>
       </div>
     </div>
     <p v-else>Ei julkaisuja.</p>
@@ -241,6 +242,32 @@ const dataURLtoFile = (dataurl, filename) => {
     u8arr[n] = bstr.charCodeAt(n);
   }
   return new File([u8arr], filename, { type: mime });
+};
+
+// Funktio päivämäärän ja kellonajan muotoiluun suomalaiseen muotoon
+const formatDate = (dateValue, includeTime = false) => {
+  if (!dateValue) return "Päivämäärää ei saatavilla";
+
+  let date;
+  if (dateValue.toDate) {
+    date = dateValue.toDate();
+  } else {
+    return "Virheellinen päivämäärä";
+  }
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  let formattedDate = `${day}.${month}.${year}`;
+
+  if (includeTime) {
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    formattedDate += ` ${hours}:${minutes}`;
+  }
+
+  return formattedDate;
 };
 
 const fetchPosts = () => {

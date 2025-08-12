@@ -32,6 +32,9 @@
 
           <p class="mt-1 break-words">{{ julkaisu.text }}</p>
           <p class="font-semibold mt-4">-{{ julkaisu.publisher }}</p>
+          <p class="text-sm text-m05greenLight">
+            {{ formatDate(julkaisu.createdAt, true) }}
+          </p>
         </div>
       </div>
       <p v-else class="text-m05greenLight italic">Ei julkaisuja.</p>
@@ -46,7 +49,7 @@
           class="bg-m05brown rounded-lg p-4 shadow-md"
         >
           <h3 class="font-semibold text-lg">{{ event.name }}</h3>
-          <p class="text-m05greenLight">{{ event.date }}</p>
+          <p class="text-m05greenLight">{{ formatDate(event.date) }}</p>
           <p class="mt-1">{{ event.description }}</p>
         </li>
         <li
@@ -67,7 +70,7 @@
           class="bg-m05greenLight rounded-lg p-4 shadow-inner"
         >
           <h3 class="font-semibold text-lg">{{ event.name }}</h3>
-          <p class="text-m05green">{{ event.date }}</p>
+          <p class="text-m05green">{{ formatDate(event.date) }}</p>
           <p class="mt-1">{{ event.description }}</p>
         </li>
         <li v-if="menneetTapahtumat.length === 0" class="text-m05beige italic">
@@ -98,6 +101,39 @@ const menneetTapahtumat = ref([]);
 
 // Firestore-julkaisut
 const julkaisut = ref([]);
+
+// Funktio päivämäärän ja kellonajan muotoiluun suomalaiseen muotoon
+const formatDate = (dateValue, includeTime = false) => {
+  if (!dateValue) return "Päivämäärää ei saatavilla";
+
+  let date;
+  // Tarkista, onko arvo Firestore Timestamp vai ISO-muotoinen merkkijono
+  if (typeof dateValue === "string") {
+    // Tapahtumien päivämäärät ovat jo merkkijonoja
+    const [year, month, day] = dateValue.split("-");
+    return `${day}.${month}.${year}`;
+  } else if (dateValue.toDate) {
+    // Julkaisujen päivämäärät ovat Firestore Timestamp -objekteja
+    date = dateValue.toDate();
+  } else {
+    return "Virheellinen päivämäärä";
+  }
+
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+
+  let formattedDate = `${day}.${month}.${year}`;
+
+  // Lisää kellonaika, jos includeTime on tosi
+  if (includeTime) {
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    formattedDate += ` ${hours}:${minutes}`;
+  }
+
+  return formattedDate;
+};
 
 // Funktio viimeisimpien julkaisujen hakemiseksi
 const fetchLatestPosts = () => {
