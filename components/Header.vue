@@ -19,7 +19,7 @@
           <NuxtLink to="/">Etusivu</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/">Teltan varauskalenteri</NuxtLink>
+          <NuxtLink to="/">Teltan varauskalenteri (tulossa)</NuxtLink>
         </li>
         <li>
           <NuxtLink to="/julkaisut">Julkaisut</NuxtLink>
