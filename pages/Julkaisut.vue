@@ -1,8 +1,8 @@
 <template>
   <div class="container">
-    <div class="flex justify-end">
-      <button @click="openModal" class="button">Luo uusi julkaisu</button>
-    </div>
+    <button @click="openModal" class="button create-post-button">
+      Luo uusi julkaisu
+    </button>
 
     <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
@@ -366,6 +366,10 @@ onMounted(() => {
 .button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.create-post-button {
+  margin-bottom: 1rem;
 }
 
 hr {
