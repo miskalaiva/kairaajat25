@@ -314,7 +314,7 @@ const bookDays = async () => {
       totalPrice: totalPrice.value,
     };
 
-    const response = await $fetch("/api/send-email.post.js", {
+    const response = await $fetch("/api/send-email", {
       method: "POST",
       body: bookingData,
     });
