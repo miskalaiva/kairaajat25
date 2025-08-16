@@ -24,27 +24,29 @@
     class="registrations-summary"
   >
     <div class="summary-item">
-      <span
-        >Osallistuu: {{ countStatus(event.registrations, "Osallistun") }}</span
-      >
+      <span>
+        Osallistuu: {{ countStatus(event.registrations, "Osallistun") }}
+      </span>
       <button @click="openModal('Osallistun')" class="toggle-button">
         Näytä
       </button>
     </div>
     <div class="summary-item">
-      <span
-        >Ei osallistu:
-        {{ countStatus(event.registrations, "En osallistu") }}</span
-      >
+      <span>
+        Ei osallistu: {{ countStatus(event.registrations, "En osallistu") }}
+      </span>
       <button @click="openModal('En osallistu')" class="toggle-button">
         Näytä
       </button>
     </div>
   </div>
 
+  <!-- MODAL -->
   <div v-if="activeModal.show" class="modal-overlay" @click.self="closeModal">
-    <div class="modal-content">
-      <button class="close-button" @click="closeModal">&times;</button>
+    <div class="modal-content" @click.stop>
+      <button class="close-button" type="button" @click="closeModal">
+        &times;
+      </button>
       <h3>{{ activeModal.title }}</h3>
       <ul>
         <li
@@ -60,7 +62,7 @@
 
 <script setup>
 import { ref, watch } from "vue";
-import { doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { useNuxtApp } from "#app";
 
 const { $db } = useNuxtApp();
@@ -137,7 +139,7 @@ const closeModal = () => {
   activeModal.value = { show: false, status: null, title: "" };
 };
 
-// watch-funktio varmistaa, että komponentti päivittää tilansa, jos propsit muuttuvat
+// propsin päivityksien resetointi
 watch(
   () => props.event.id,
   () => {
@@ -228,6 +230,7 @@ watch(
   background-color: #f0f0f0;
 }
 
+/* MODAL */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -238,7 +241,7 @@ watch(
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 9999; /* nostettu päälle */
 }
 
 .modal-content {
