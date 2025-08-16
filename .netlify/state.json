@@ -1,0 +1,20 @@
+{
+	"geolocation": {
+		"data": {
+			"city": "Helsinki",
+			"country": {
+				"code": "FI",
+				"name": "Finland"
+			},
+			"subdivision": {
+				"code": "18",
+				"name": "Uusimaa"
+			},
+			"timezone": "Europe/Helsinki",
+			"latitude": 60.1719,
+			"longitude": 24.9347,
+			"postalCode": "00100"
+		},
+		"timestamp": 1755376747103
+	}
+}
