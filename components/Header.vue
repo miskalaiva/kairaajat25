@@ -98,6 +98,7 @@ const closeMenu = () => {
   cursor: pointer;
   padding: 0;
 }
+
 .hamburger {
   width: 100%;
   height: 3px;

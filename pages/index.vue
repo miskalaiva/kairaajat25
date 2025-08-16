@@ -1,6 +1,6 @@
 <template>
   <!-- Banneri -->
-  <section class="relative w-full h-96 overflow-hidden shadow-lg rounded-lg">
+  <section class="relative w-full overflow-hidden">
     <!-- Bannerikuva -->
     <img
       :src="bannerImage"

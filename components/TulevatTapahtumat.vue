@@ -18,7 +18,7 @@
       <div v-if="showLeft" class="absolute inset-y-0 left-0 flex items-center">
         <button
           @click="scrollEvents('left')"
-          class="bg-m05greenDark text-m05beige p-2 rounded-full shadow-lg"
+          class="bg-white text-black p-2 rounded-full shadow-lg"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -44,7 +44,7 @@
       >
         <button
           @click="scrollEvents('right')"
-          class="bg-m05greenDark text-m05beige p-2 rounded-full shadow-lg"
+          class="bg-white text-black p-2 rounded-full shadow-lg"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

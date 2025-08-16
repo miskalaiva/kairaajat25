@@ -30,7 +30,7 @@
       <div class="absolute inset-y-0 left-0 flex items-center">
         <button
           @click="scrollCarousel('left')"
-          class="bg-m05greenDark text-m05beige p-2 rounded-full shadow-lg"
+          class="bg-white text-black p-2 rounded-full"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +51,7 @@
       <div class="absolute inset-y-0 right-0 flex items-center">
         <button
           @click="scrollCarousel('right')"
-          class="bg-m05greenDark text-m05beige p-2 rounded-full shadow-lg"
+          class="bg-white text-black p-2 rounded-full"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
