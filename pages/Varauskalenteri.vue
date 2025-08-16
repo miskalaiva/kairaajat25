@@ -139,7 +139,7 @@
 import { ref, computed, onMounted } from "vue";
 import { collection, addDoc, getDocs } from "firebase/firestore";
 definePageMeta({
-  layout: "no-layout",
+  layout: "clean",
 });
 const { $db } = useNuxtApp();
 
