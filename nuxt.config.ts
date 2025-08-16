@@ -4,9 +4,9 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ["@nuxtjs/tailwindcss", "@netlify/nuxt"],
   css: ["@/assets/css/main.css"],
-  ssr: false, // jos puhdas SPA, tai
+  ssr: true, // pakollinen, jotta serverless API toimii
   nitro: {
-    preset: "static",
+    preset: "vercel", // optimoi serverless APIt Vercelille
   },
 
   // Tärkeä lisäys ympäristömuuttujien käsittelyyn.
