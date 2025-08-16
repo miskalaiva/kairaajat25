@@ -25,8 +25,14 @@
       <h2>Lisää uusi tapahtuma</h2>
       <form @submit.prevent="submitEvent" class="form">
         <div class="form-group">
-          <label for="name">Tapahtuman nimi:</label>
-          <input type="text" id="name" v-model="event.name" required />
+          <label for="name"></label>
+          <input
+            type="text"
+            placeholder="Tapahtuman nimi"
+            id="name"
+            v-model="event.name"
+            required
+          />
         </div>
 
         <div class="form-group">

@@ -10,8 +10,9 @@
         <button class="close-modal-button" @click="closeModal">X</button>
         <form @submit.prevent="submitPost" class="form">
           <div class="form-group">
-            <label for="publisher">Julkaisijan nimi:</label>
+            <label for="publisher"></label>
             <input
+              placeholder="Julkaisijan nimi"
               type="text"
               id="publisher"
               v-model="post.publisher"
@@ -20,12 +21,17 @@
           </div>
 
           <div class="form-group">
-            <label for="text">Teksti:</label>
-            <textarea id="text" v-model="post.text" required></textarea>
+            <label for="text"></label>
+            <textarea
+              placeholder="Teksti"
+              id="text"
+              v-model="post.text"
+              required
+            ></textarea>
           </div>
 
           <div class="form-group">
-            <label for="images">Kuvat:</label>
+            <label for="images">Liitä kuva julkaisuun</label>
             <input
               type="file"
               id="images"
@@ -66,11 +72,7 @@
 
     <p class="text-2xl text-m05beige">Kaikki julkaisut</p>
     <div v-if="posts.length > 0" class="post-list">
-      <div
-        v-for="p in posts"
-        :key="p.id"
-        class="post-item border-1 border-b border-black pb-4"
-      >
+      <div v-for="p in posts" :key="p.id" class="post-item text-black pb-4">
         <div v-if="p.images && p.images.length > 0" class="post-images">
           <img
             v-for="(image, index) in p.images"
@@ -80,9 +82,11 @@
             class="post-image"
           />
         </div>
-        <p class="text-sm">{{ formatDate(p.createdAt, true) }}</p>
-        <p class="py-4">{{ p.text }}</p>
-        <h3 class="font-semibold">-{{ p.publisher }}</h3>
+        <div class="bg-white p-2.5 md:p-4">
+          <p class="text-sm">{{ formatDate(p.createdAt, true) }}</p>
+          <p class="py-4">{{ p.text }}</p>
+          <h3 class="font-semibold">-{{ p.publisher }}</h3>
+        </div>
       </div>
     </div>
     <p v-else>Ei julkaisuja.</p>
@@ -91,7 +95,6 @@
 
 <script setup>
 import { ref, onMounted } from "vue";
-// Poista vanha rivi, koska se ei toimi: import { db } from "@/utils/firebase";
 import {
   collection,
   addDoc,
@@ -379,8 +382,8 @@ onMounted(() => {
 
 .button {
   padding: 0.75rem 1.5rem;
-  background-color: #3b552e;
-  color: #d7c6a0;
+  background-color: #d7c6a0;
+
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -426,7 +429,6 @@ hr {
 .post-image {
   max-width: 100%;
   height: auto;
-  border-radius: 4px;
 }
 
 /* Uudet tyylit modaalille */

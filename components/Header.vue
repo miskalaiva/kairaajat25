@@ -16,19 +16,21 @@
 
       <ul :class="['nav-links', { open: isMenuOpen }]">
         <li>
-          <NuxtLink to="/">Etusivu</NuxtLink>
+          <NuxtLink to="/" @click="closeMenu">Etusivu</NuxtLink>
         </li>
         <li>
           <NuxtLink to="/">Teltan varauskalenteri (tulossa)</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/julkaisut">Julkaisut</NuxtLink>
+          <NuxtLink to="/julkaisut" @click="closeMenu">Julkaisut</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/tapahtumat">Tapahtumat</NuxtLink>
+          <NuxtLink to="/tapahtumat" @click="closeMenu">Tapahtumat</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/lisaatapahtuma">Lisää tapahtuma</NuxtLink>
+          <NuxtLink to="/lisaatapahtuma" @click="closeMenu"
+            >Lisää tapahtuma</NuxtLink
+          >
         </li>
       </ul>
     </nav>
@@ -41,11 +43,14 @@ const isMenuOpen = ref(false);
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
 };
+const closeMenu = () => {
+  isMenuOpen.value = false;
+};
 </script>
 
 <style scoped>
 .header {
-  background-color: #4b633e; /* tumma vihreä */
+  background-color: #000000; /* tumma vihreä */
   color: #d7c6a0; /* beige */
   padding: 1rem 0;
 }
@@ -127,7 +132,7 @@ const toggleMenu = () => {
   .nav-links a {
     display: block;
     padding: 0.5rem;
-    background-color: rgba(75, 99, 62, 0.8);
+    background-color: #000000;
   }
   .nav-links a:hover {
     background-color: rgba(120, 136, 95, 0.8);
