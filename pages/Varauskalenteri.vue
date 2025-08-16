@@ -1,16 +1,20 @@
 <template>
   <div class="calendar-container">
     <h2 class="calendar-title">Teltan varauskalenteri</h2>
-    <div class="mb-8">
+    <div class="mb-4">
       <p class="mb-2 text-lg">
         Ruotsin armeijan puolijoukkueteltta ja kamiina.
       </p>
+
       <ul class="list-disc ml-8">
         <li>Halkaisija: 6 metriä</li>
         <li>Keskikorkeus: 2,5 metriä</li>
         <li>Reunakorkeus: 1,1 metriä</li>
         <li>Lattiapinta-ala: 20 neliömetriä</li>
       </ul>
+    </div>
+    <div class="mb-10">
+      <KuvaModalTeltta />
     </div>
 
     <div v-if="!isLoaded" class="loading">Ladataan kalenteria...</div>
