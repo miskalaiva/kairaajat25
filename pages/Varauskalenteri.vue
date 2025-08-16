@@ -13,10 +13,8 @@
       </ul>
     </div>
 
-    <!-- Latausanimaatio -->
     <div v-if="!isLoaded" class="loading">Ladataan kalenteria...</div>
 
-    <!-- Kalenteri -->
     <div v-if="isLoaded" class="calendar">
       <div class="calendar-header">
         <button @click="prevMonth">&lt;</button>
@@ -62,7 +60,6 @@
       </div>
     </div>
 
-    <!-- Varaajan tiedot ja napit -->
     <div class="booking-info">
       <input
         v-model="name"
@@ -76,27 +73,45 @@
         placeholder="Puhelinnumero"
         class="booking-input"
       />
-
+      <input
+        v-model="email"
+        type="email"
+        placeholder="Sähköpostiosoite"
+        class="booking-input"
+      />
       <button
         @click="bookDays"
-        :disabled="!startDay || !endDay || isRangeBooked || !name || !phone"
+        :disabled="
+          !startDay || !endDay || isRangeBooked || !name || !phone || !email
+        "
         class="book-button"
       >
         {{
-          !name || !phone
+          !name || !phone || !email
             ? "Täytä tiedot"
             : isRangeBooked
             ? "Varattu"
             : "Varaa valitut päivät"
         }}
       </button>
+
+      <div v-if="bookingSuccess" class="success-message">
+        <p>
+          Kiitos varauksestasi! Saat noutoa koskevat tiedot viestillä
+          vuorokauden kuluessa.
+        </p>
+        <p>
+          Jos varauksesi alkaa kuitenkin alle vuorokauden sisällä, pyydä noutoa
+          koskevat tiedot numerosta 040 193 7715.
+        </p>
+      </div>
+
       <span>Varaamalla valitut päivät hyväksyt varauksen ehdot.</span>
       <button @click="showTerms = true" class="terms-button">
         Varauksen ehdot
       </button>
     </div>
 
-    <!-- Modal -->
     <div v-if="showTerms" class="modal-overlay" @click.self="showTerms = false">
       <div class="modal p-4">
         <h3 class="font-semibold mb-2">Varauksen ehdot</h3>
@@ -135,9 +150,11 @@ const endDay = ref(null);
 const bookedDays = ref([]);
 const isLoaded = ref(false);
 const showTerms = ref(false);
+const bookingSuccess = ref(false); // Uusi muuttuja onnistuneelle varaukselle
 
 const name = ref("");
 const phone = ref("");
+const email = ref("");
 
 const monthNames = [
   "Tammikuu",
@@ -261,28 +278,65 @@ const bookDays = async () => {
     !endDay.value ||
     isRangeBooked.value ||
     !name.value ||
-    !phone.value
-  )
+    !phone.value ||
+    !email.value
+  ) {
+    alert("Täytä kaikki pakolliset tiedot ennen varausta.");
     return;
-
-  let current = new Date(startDay.value);
-  while (current <= endDay.value) {
-    const dayString = `${current.getFullYear()}-${
-      current.getMonth() + 1
-    }-${current.getDate()}`;
-    bookedDays.value.push(dayString);
-    await addDoc(collection($db, "bookedDays"), {
-      day: dayString,
-      name: name.value,
-      phone: phone.value,
-    });
-    current.setDate(current.getDate() + 1);
   }
 
-  startDay.value = null;
-  endDay.value = null;
-  name.value = "";
-  phone.value = "";
+  try {
+    let current = new Date(startDay.value);
+    while (current <= endDay.value) {
+      const dayString = `${current.getFullYear()}-${
+        current.getMonth() + 1
+      }-${current.getDate()}`;
+      await addDoc(collection($db, "bookedDays"), {
+        day: dayString,
+        name: name.value,
+        phone: phone.value,
+        email: email.value,
+      });
+      current.setDate(current.getDate() + 1);
+    }
+
+    // Varauksen onnistuttua, lisätään varatut päivät käyttöliittymään
+    await fetchBookedDays();
+
+    const bookingData = {
+      name: name.value,
+      phone: phone.value,
+      email: email.value,
+      startDate: formatDate(startDay.value),
+      endDate: formatDate(endDay.value),
+      totalPrice: totalPrice.value,
+    };
+
+    const response = await $fetch("/api/send-email", {
+      method: "POST",
+      body: bookingData,
+    });
+
+    if (response.success) {
+      // alert("Varaus onnistui! Vahvistusviestit lähetetty.");
+    } else {
+      // alert("Varaus onnistui, mutta vahvistusviestin lähetys epäonnistui.");
+      console.error(response.error);
+    }
+
+    // Asetetaan onnistunut varaus -muuttuja todeksi
+    bookingSuccess.value = true;
+
+    // Tyhjennetään lomake
+    startDay.value = null;
+    endDay.value = null;
+    name.value = "";
+    phone.value = "";
+    email.value = "";
+  } catch (error) {
+    console.error("Varauksen tai sähköpostin lähetysvirhe:", error);
+    alert("Varauksen tekemisessä tapahtui virhe. Yritä uudelleen.");
+  }
 };
 
 const fetchBookedDays = async () => {
@@ -462,5 +516,14 @@ const nextMonth = () => {
   background-color: #78885f;
   color: #fff;
   cursor: pointer;
+}
+
+.success-message {
+  color: #d7c6a0;
+  background-color: #222;
+  border: 1px solid #78885f;
+  padding: 1rem;
+  border-radius: 5px;
+  margin-top: 1rem;
 }
 </style>
