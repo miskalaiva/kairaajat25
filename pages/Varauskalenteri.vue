@@ -138,7 +138,9 @@
 <script setup>
 import { ref, computed, onMounted } from "vue";
 import { collection, addDoc, getDocs } from "firebase/firestore";
-
+definePageMeta({
+  layout: "no-layout",
+});
 const { $db } = useNuxtApp();
 
 const today = new Date();

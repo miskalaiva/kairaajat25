@@ -24,19 +24,13 @@
     class="registrations-summary"
   >
     <div class="summary-item">
-      <span>
-        Osallistuu: {{ countStatus(event.registrations, "Osallistun") }}
-      </span>
       <button @click="openModal('Osallistun')" class="toggle-button">
-        Näytä
+        Näytä osallistujat
       </button>
     </div>
     <div class="summary-item">
-      <span>
-        Ei osallistu: {{ countStatus(event.registrations, "En osallistu") }}
-      </span>
       <button @click="openModal('En osallistu')" class="toggle-button">
-        Näytä
+        Näytä poissaolijat
       </button>
     </div>
   </div>
@@ -131,8 +125,8 @@ const filteredRegistrations = (status) => {
 const openModal = (status) => {
   const title =
     status === "Osallistun"
-      ? `Osallistujat: ${props.event.name}`
-      : `Poissaolijat: ${props.event.name}`;
+      ? `${props.event.name} - osallistujat`
+      : `${props.event.name} - poissaolijat`;
   activeModal.value = { show: true, status, title };
 };
 
