@@ -2,7 +2,9 @@
 import { Resend } from "resend";
 
 export default defineEventHandler(async (event) => {
+  console.log("send-email route hit!"); // TÄTÄ KATSOTAAN
   const body = await readBody(event);
+  console.log("Body:", body);
 
   if (
     !body.name ||
