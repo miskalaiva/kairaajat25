@@ -102,7 +102,7 @@
         </p>
         <p>
           Jos varauksesi alkaa kuitenkin alle vuorokauden sisällä, pyydä noutoa
-          koskevat tiedot numerosta 040 193 7715.
+          koskevat tiedot numerosta +35840 193 7715.
         </p>
       </div>
 
@@ -118,14 +118,27 @@
         <ul class="list-decimal list-inside space-y-2 text-gray-800">
           <li>Maksu suoritetaan paikan päällä noudon yhteydessä.</li>
           <li>
-            Peruutukset tulee tehdä vähintään 48 tuntia ennen varattua aikaa.
+            Peruutukset tulee tehdä vähintään 48 tuntia ennen varauksen alkua.
+            Jos varaus tehdään kuitenkin alle 48 tuntia ennen varauksen alkua,
+            peruutuksesta sovitaan tapauskohtaisesti.
           </li>
           <li>Asiakas on vastuussa teltan kunnosta ja siisteydestä.</li>
+          <li>Asiakas korvaa aiheutetut vahingot.</li>
           <li>Tupakointi ja avotulen teko teltassa on kielletty.</li>
           <li>
             Varauksen ehtoja muutetaan vain ilmoittamalla asiakkaille etukäteen.
           </li>
+          <li>
+            Varauksen tekemisen jälkeen saat noutoa koskevat tiedot viestillä
+            vuorokauden kuluessa. <span class="text-red-500">HUOM!</span> Jos
+            varauksesi alkaa alle vuorokauden sisällä, pyydä noutoa koskevat
+            tiedot alla olevasta numerosta.
+          </li>
         </ul>
+        <div class="mt-4">
+          <p class="font-semibold">Ota yhteyttä</p>
+          <a href="tel:+358401937715" class="underline">+358 40 193 7715</a>
+        </div>
 
         <button @click="showTerms = false" class="close-button px-4 py-2 mt-4">
           Sulje

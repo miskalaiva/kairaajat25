@@ -12,17 +12,16 @@ export default defineEventHandler(async (event) => {
     const { name, email, phone, startDate, endDate, totalPrice } = body;
 
     await resend.emails.send({
-      from: "Acme <onboarding@resend.dev>",
+      from: "Varausvahvistus <onboarding@resend.dev>",
       to: "miska9657@gmail.com",
-      subject: `Uusi varaus: ${name}`,
+      subject: `Uusi telttavaraus: ${name}`,
       html: `
-        <p>Varauksen tiedot:</p>
+        <p>Varaajan tiedot:</p>
         <ul>
           <li>Nimi: ${name}</li>
           <li>Sähköposti: ${email}</li>
           <li>Puhelin: ${phone}</li>
-          <li>Alkaa: ${startDate}</li>
-          <li>Päättyy: ${endDate}</li>
+          <li>Varauksen ajankohta: ${startDate} - ${endDate}</li>
           <li>Hinta: ${totalPrice}€</li>
         </ul>
       `,
