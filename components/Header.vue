@@ -19,7 +19,9 @@
           <NuxtLink to="/" @click="closeMenu">Etusivu</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/varauskalenteri">Teltan varauskalenteri</NuxtLink>
+          <NuxtLink to="/varauskalenteri" @click="closeMenu"
+            >Teltan varauskalenteri</NuxtLink
+          >
         </li>
         <li>
           <NuxtLink to="/julkaisut" @click="closeMenu">Julkaisut</NuxtLink>

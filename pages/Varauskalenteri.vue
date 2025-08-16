@@ -52,7 +52,7 @@
     </div>
 
     <div class="pricing mt-4">
-      <p><strong>40€ / yö</strong></p>
+      <p><strong>30€ / yö</strong></p>
       <div v-if="startDay && endDay">
         <p class="py-2">
           Valittu aikaväli: {{ formatDate(startDay) }} -
@@ -239,7 +239,7 @@ const totalPrice = computed(() => {
   const nights = Math.ceil(
     (endDay.value - startDay.value) / (1000 * 60 * 60 * 24)
   );
-  return nights * 40;
+  return nights * 30;
 });
 
 const isRangeBooked = computed(() => {
