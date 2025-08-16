@@ -82,8 +82,8 @@
             class="post-image"
           />
         </div>
-        <div class="bg-white p-2 md:p-4">
-          <p class="text-sm">{{ formatDate(p.createdAt, true) }}</p>
+        <div class="text-white">
+          <p class="text-sm pt-2 px-1">{{ formatDate(p.createdAt, true) }}</p>
           <p class="py-4">{{ p.text }}</p>
           <h3 class="font-semibold">-{{ p.publisher }}</h3>
         </div>
