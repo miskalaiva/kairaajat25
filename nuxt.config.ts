@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   css: ["@/assets/css/main.css"],
   ssr: false, // jos puhdas SPA, tai
   nitro: {
-    preset: "netlify",
+    preset: "static",
   },
 
   // Tärkeä lisäys ympäristömuuttujien käsittelyyn.
