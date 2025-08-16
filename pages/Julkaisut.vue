@@ -7,7 +7,7 @@
     <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
       <div class="modal-content">
         <h2>Luo uusi julkaisu</h2>
-        <button class="close-modal-button" @click="closeModal">X</button>
+        <button class="close-modal-button" @click="closeModal">Sulje</button>
         <form @submit.prevent="submitPost" class="form">
           <div class="form-group">
             <label for="publisher"></label>
@@ -82,7 +82,7 @@
             class="post-image"
           />
         </div>
-        <div class="text-white">
+        <div class="text-m05beige">
           <p class="text-sm pt-2 px-1">{{ formatDate(p.createdAt, true) }}</p>
           <p class="py-4">{{ p.text }}</p>
           <h3 class="font-semibold">-{{ p.publisher }}</h3>
@@ -311,7 +311,6 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1.5rem;
   border-radius: 8px;
 }
 
@@ -461,7 +460,7 @@ hr {
   right: 10px;
   background-color: transparent;
   border: none;
-  font-size: 1.5rem;
+  font-size: 16px;
   cursor: pointer;
   color: #333;
 }

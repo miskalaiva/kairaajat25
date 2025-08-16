@@ -48,6 +48,7 @@
           </svg>
         </button>
       </div>
+
       <div class="absolute inset-y-0 right-0 flex items-center">
         <button
           @click="scrollCarousel('right')"
@@ -70,6 +71,7 @@
         </button>
       </div>
     </div>
+
     <p v-else class="text-m05greenLight italic">Ei julkaisuja.</p>
   </section>
 </template>

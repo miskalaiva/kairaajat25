@@ -19,7 +19,7 @@
           <NuxtLink to="/" @click="closeMenu">Etusivu</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/">Teltan varauskalenteri (tulossa)</NuxtLink>
+          <NuxtLink to="/varauskalenteri">Teltan varauskalenteri</NuxtLink>
         </li>
         <li>
           <NuxtLink to="/julkaisut" @click="closeMenu">Julkaisut</NuxtLink>
@@ -73,7 +73,7 @@ const closeMenu = () => {
 .nav-links {
   list-style: none;
   display: flex;
-  gap: 1.5rem;
+  gap: 2rem;
   margin: 0;
   padding: 0;
 }
