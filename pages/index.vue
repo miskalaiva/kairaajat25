@@ -8,13 +8,7 @@
       class="w-full h-full object-cover"
     />
 
-    <!-- Avauksen nappi -->
-    <button
-      @click="showModal = true"
-      class="absolute bottom-4 right-4 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg"
-    >
-      Näytä tiedote
-    </button>
+    <!-- Tekstikerros kuvan päällä -->
   </section>
 
   <!-- Sisältö -->
@@ -23,22 +17,6 @@
     <TulevatTapahtumat />
     <MenneetTapahtumat />
   </div>
-
-  <!-- Teleportoitu modal -->
-  <teleport to="body">
-    <div v-if="showModal" class="modal-overlay" @click.self="showModal = false">
-      <div class="modal p-6">
-        <h3 class="font-semibold mb-4 text-lg">Etusivun tiedote</h3>
-        <p class="text-gray-800">
-          Tämä modal avautuu koko näytön päälle, myös mobiilissa. Se ei enää jää
-          karusellin sisälle, koska se teleportataan suoraan bodyyn.
-        </p>
-        <button @click="showModal = false" class="close-button px-4 py-2 mt-6">
-          Sulje
-        </button>
-      </div>
-    </div>
-  </teleport>
 </template>
 
 <script setup>
@@ -59,7 +37,6 @@ import bannerImage from "~/assets/images/etusivu/kairaajatbanner.jpg";
 const { $db } = useNuxtApp();
 const julkaisut = ref([]);
 const carousel = ref(null);
-const showModal = ref(false); // 👈 modalin tila
 
 const formatDate = (dateValue, includeTime = false) => {
   if (!dateValue) return "Päivämäärää ei saatavilla";
@@ -118,30 +95,3 @@ onMounted(() => {
   fetchLatestPosts();
 });
 </script>
-
-<style scoped>
-.modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999; /* 👈 varmistaa että modal on kaiken päällä */
-}
-.modal {
-  background-color: #fff;
-  color: #000;
-  border-radius: 10px;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
-}
-.close-button {
-  border: none;
-  border-radius: 5px;
-  background-color: #1e90ff;
-  color: #fff;
-  cursor: pointer;
-}
-</style>

@@ -241,7 +241,7 @@ watch(
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999; /* nostettu päälle */
+  z-index: 9999;
 }
 
 .modal-content {
