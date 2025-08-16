@@ -41,23 +41,24 @@
     </div>
   </div>
 
-  <!-- MODAL -->
-  <div v-if="activeModal.show" class="modal-overlay" @click.self="closeModal">
-    <div class="modal-content" @click.stop>
-      <button class="close-button" type="button" @click="closeModal">
-        &times;
-      </button>
-      <h3>{{ activeModal.title }}</h3>
-      <ul>
-        <li
-          v-for="(reg, index) in filteredRegistrations(activeModal.status)"
-          :key="index"
-        >
-          <strong>{{ reg.name }}</strong>
-        </li>
-      </ul>
+  <teleport to="body">
+    <div v-if="activeModal.show" class="modal-overlay" @click.self="closeModal">
+      <div class="modal-content" @click.stop>
+        <button class="close-button" type="button" @click="closeModal">
+          &times;
+        </button>
+        <h3>{{ activeModal.title }}</h3>
+        <ul>
+          <li
+            v-for="(reg, index) in filteredRegistrations(activeModal.status)"
+            :key="index"
+          >
+            <strong>{{ reg.name }}</strong>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
+  </teleport>
 </template>
 
 <script setup>
