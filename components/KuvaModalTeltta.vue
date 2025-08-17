@@ -61,7 +61,12 @@ import { ref } from "vue";
 const isOpen = ref(false);
 const currentIndex = ref(0);
 
-const images = ["/kamiina.jpeg", "/teltta1.jpeg", "/teltta2.jpeg"];
+const images = [
+  "/kamiina.jpeg",
+  "/teltta1.jpeg",
+  "/teltta2.jpeg",
+  "/teltta3.jpeg",
+];
 
 const nextImage = () => {
   currentIndex.value = (currentIndex.value + 1) % images.length;

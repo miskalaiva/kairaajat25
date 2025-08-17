@@ -19,7 +19,12 @@
             />
           </div>
 
-          <p class="mt-1 break-words">{{ post.text }}</p>
+          <p class="mt-1 break-words">
+            Tämä otos kuvastaa yhtä kovinta talvireissua. Sivutuuli oli niin
+            kova, että erään kesyttäjän autonkin suisti ojaan. Teltassa
+            kuitenkin tarkeni erittäin hyvin, joka kertonee, että telttamme
+            soveltuu ankariin oloihin hyvin.
+          </p>
           <p class="font-semibold mt-4">-{{ post.publisher }}</p>
           <p class="text-sm text-m05greenLight">
             {{ formatDate(post.createdAt, true) }}
@@ -27,14 +32,11 @@
         </div>
       </div>
 
-      <div class="absolute inset-y-0 left-0 flex items-center">
-        <button
-          @click="scrollCarousel('left')"
-          class="bg-white text-black p-2 rounded-full"
-        >
+      <div class="absolute inset-y-0 -left-1 flex items-center">
+        <button @click="scrollCarousel('left')" class="text-black rounded-full">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
+            class="size-8"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -49,14 +51,14 @@
         </button>
       </div>
 
-      <div class="absolute inset-y-0 right-0 flex items-center">
+      <div class="absolute inset-y-0 -right-1 flex items-center">
         <button
           @click="scrollCarousel('right')"
-          class="bg-white text-black p-2 rounded-full"
+          class="text-black rounded-full"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            class="h-6 w-6"
+            class="size-8"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
