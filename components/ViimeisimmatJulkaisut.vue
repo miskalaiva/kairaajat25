@@ -20,10 +20,7 @@
           </div>
 
           <p class="mt-1 break-words">
-            Tämä otos kuvastaa yhtä kovinta talvireissua. Sivutuuli oli niin
-            kova, että erään kesyttäjän autonkin suisti ojaan. Teltassa
-            kuitenkin tarkeni erittäin hyvin, joka kertonee, että telttamme
-            soveltuu ankariin oloihin hyvin.
+            {{ post.text }}
           </p>
           <p class="font-semibold mt-4">-{{ post.publisher }}</p>
           <p class="text-sm text-m05greenLight">
