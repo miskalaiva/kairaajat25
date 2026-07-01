@@ -1,7 +1,17 @@
 <template>
   <section>
     <p class="text-m05beige text-2xl mb-2">{{ title }}</p>
-    <div v-if="posts.length > 0" class="relative">
+
+    <!-- Lataustila -->
+    <div v-if="loading" class="skeleton-carousel">
+      <div class="skeleton-card" v-for="n in 3" :key="n">
+        <div class="skeleton-line skeleton-img"></div>
+        <div class="skeleton-line skeleton-text"></div>
+        <div class="skeleton-line skeleton-author"></div>
+      </div>
+    </div>
+
+    <div v-else-if="posts.length > 0" class="relative">
       <div
         ref="carousel"
         class="flex space-x-4 overflow-x-scroll snap-x snap-mandatory pb-4 scroll-smooth"
@@ -71,12 +81,12 @@
       </div>
     </div>
 
-    <p v-else class="text-m05greenLight italic">Ei julkaisuja.</p>
+    <p v-else-if="!loading" class="text-m05greenLight italic">Ei julkaisuja.</p>
   </section>
 </template>
 
 <script setup>
-import { ref, onMounted, defineProps } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import {
   collection,
   query,
@@ -96,6 +106,8 @@ const props = defineProps({
 
 const posts = ref([]);
 const carousel = ref(null);
+const loading = ref(true);
+let unsubscribe = null;
 
 const formatDate = (dateValue, includeTime = false) => {
   if (!dateValue) return "Päivämäärää ei saatavilla";
@@ -132,11 +144,12 @@ const fetchLatestPosts = () => {
     limit(6)
   );
 
-  onSnapshot(q, (snapshot) => {
+  unsubscribe = onSnapshot(q, (snapshot) => {
     posts.value = snapshot.docs.map((doc) => ({
       id: doc.id,
       ...doc.data(),
     }));
+    loading.value = false;
   });
 };
 
@@ -150,17 +163,43 @@ const scrollCarousel = (direction) => {
   }
 };
 
-onMounted(() => {
-  fetchLatestPosts();
-});
+onMounted(() => { fetchLatestPosts(); });
+onUnmounted(() => { unsubscribe?.(); });
 </script>
 
 <style scoped>
-.relative {
-  position: relative;
+.relative { position: relative; }
+.absolute { position: absolute; }
+
+/* Skeleton */
+.skeleton-carousel {
+  display: flex;
+  gap: 1rem;
+  overflow: hidden;
 }
 
-.absolute {
-  position: absolute;
+.skeleton-card {
+  flex: 0 0 20rem;
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.skeleton-line {
+  background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.skeleton-img    { height: 12rem; width: 100%; }
+.skeleton-text   { height: 3rem;  width: 90%; }
+.skeleton-author { height: 1rem;  width: 40%; }
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 </style>

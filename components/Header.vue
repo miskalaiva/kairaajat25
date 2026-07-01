@@ -19,11 +19,6 @@
           <NuxtLink to="/" @click="closeMenu">Etusivu</NuxtLink>
         </li>
         <li>
-          <NuxtLink to="/varauskalenteri" @click="closeMenu"
-            >Teltan varauskalenteri</NuxtLink
-          >
-        </li>
-        <li>
           <NuxtLink to="/julkaisut" @click="closeMenu">Julkaisut</NuxtLink>
         </li>
         <li>
@@ -34,20 +29,25 @@
             >Lisää tapahtuma</NuxtLink
           >
         </li>
+        <li>
+          <NuxtLink to="/varauskalenteri" @click="closeMenu"
+            >Teltan varauskalenteri</NuxtLink
+          >
+        </li>
       </ul>
     </nav>
   </header>
 </template>
 
 <script setup>
-import { ref } from "vue";
-const isMenuOpen = ref(false);
+import { ref } from 'vue'
+const isMenuOpen = ref(false)
 const toggleMenu = () => {
-  isMenuOpen.value = !isMenuOpen.value;
-};
+  isMenuOpen.value = !isMenuOpen.value
+}
 const closeMenu = () => {
-  isMenuOpen.value = false;
-};
+  isMenuOpen.value = false
+}
 </script>
 
 <style scoped>

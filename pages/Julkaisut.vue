@@ -71,7 +71,16 @@
     </div>
 
     <p class="text-2xl text-m05beige">Kaikki julkaisut</p>
-    <div v-if="posts.length > 0" class="post-list">
+
+    <div v-if="loading" class="post-list">
+      <div class="post-item skeleton" v-for="n in 3" :key="n">
+        <div class="skeleton-line skeleton-img"></div>
+        <div class="skeleton-line skeleton-text"></div>
+        <div class="skeleton-line skeleton-author"></div>
+      </div>
+    </div>
+
+    <div v-else-if="posts.length > 0" class="post-list">
       <div v-for="p in posts" :key="p.id" class="post-item text-black pb-4">
         <div v-if="p.images && p.images.length > 0" class="post-images">
           <img
@@ -89,7 +98,7 @@
         </div>
       </div>
     </div>
-    <p v-else>Ei julkaisuja.</p>
+    <p v-else-if="!loading">Ei julkaisuja.</p>
   </div>
 </template>
 
@@ -112,6 +121,7 @@ const post = ref({
 });
 
 const posts = ref([]);
+const loading = ref(true);
 const selectedImages = ref([]);
 const imagePreviews = ref([]);
 const isUploading = ref(false);
@@ -284,6 +294,7 @@ const fetchPosts = () => {
       id: doc.id,
       ...doc.data(),
     }));
+    loading.value = false;
   });
 };
 
@@ -463,5 +474,25 @@ hr {
   font-size: 16px;
   cursor: pointer;
   color: #333;
+}
+
+/* Skeleton */
+.skeleton { pointer-events: none; }
+
+.skeleton-line {
+  background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.skeleton-img    { height: 12rem; width: 100%; }
+.skeleton-text   { height: 4rem;  width: 90%; }
+.skeleton-author { height: 1rem;  width: 30%; }
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
 }
 </style>

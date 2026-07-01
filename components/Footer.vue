@@ -6,7 +6,7 @@
           <h2 class="text-xl font-bold">Kairankesyttäjät</h2>
           <!-- <p class="mt-2">Tekstiä</p> -->
           <div class="contact-info">
-            <p>Sähköposti: tulossa</p>
+            <p>Sähköposti ...</p>
           </div>
         </div>
         <div class="footer-section links">

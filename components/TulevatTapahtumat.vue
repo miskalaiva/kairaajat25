@@ -2,12 +2,23 @@
   <div class="events-container relative">
     <p class="text-m05beige text-2xl mb-2">{{ title }}</p>
 
-    <div v-if="upcomingEvents.length > 0" class="relative">
+    <!-- Lataustila -->
+    <div v-if="loading" class="event-list">
+      <div class="event-item skeleton" v-for="n in 2" :key="n">
+        <div class="skeleton-line skeleton-title"></div>
+        <div class="skeleton-line skeleton-date"></div>
+        <div class="skeleton-line skeleton-desc"></div>
+      </div>
+    </div>
+
+    <div v-else-if="upcomingEvents.length > 0" class="relative">
       <div ref="eventList" class="event-list">
         <div v-for="event in upcomingEvents" :key="event.id" class="event-item">
           <div class="event-details">
             <h3>{{ event.name }}</h3>
-            <p class="event-date py-2">{{ formatDate(event.date) }}</p>
+            <p class="event-date py-2">
+              {{ formatDateRange(event.date, event.endDate) }}
+            </p>
             <p>{{ event.description }}</p>
           </div>
           <IlmoitaTapahtumaan v-if="showRegistration" :event="event" />
@@ -15,8 +26,8 @@
       </div>
 
       <!-- Vasemman nuolen nappi -->
-      <div v-if="showLeft" class="absolute inset-y-0 left-0 flex items-center">
-        <button @click="scrollEvents('left')" class="text-black rounded-full">
+      <div v-if="showLeft" class="arrow arrow-left">
+        <button @click="scrollEvents('left')" class="arrow-btn">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="size-8"
@@ -35,11 +46,8 @@
       </div>
 
       <!-- Oikean nuolen nappi -->
-      <div
-        v-if="showRight"
-        class="absolute inset-y-0 right-0 flex items-center"
-      >
-        <button @click="scrollEvents('right')" class="text-black rounded-full">
+      <div v-if="showRight" class="arrow arrow-right">
+        <button @click="scrollEvents('right')" class="arrow-btn">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             class="size-8"
@@ -63,72 +71,88 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick, defineProps } from "vue";
-import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
-import IlmoitaTapahtumaan from "./IlmoitaTapahtumaan.vue";
+import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { collection, onSnapshot, query, orderBy } from 'firebase/firestore'
+import IlmoitaTapahtumaan from './IlmoitaTapahtumaan.vue'
 
-const { $db } = useNuxtApp();
+const { $db } = useNuxtApp()
 
 const props = defineProps({
-  title: { type: String, default: "Tulevat tapahtumat" },
+  title: { type: String, default: 'Tulevat tapahtumat' },
   showRegistration: { type: Boolean, default: true },
-});
+})
 
-const upcomingEvents = ref([]);
-const eventList = ref(null);
-const showLeft = ref(false);
-const showRight = ref(false);
+const upcomingEvents = ref([])
+const eventList = ref(null)
+const showLeft = ref(false)
+const showRight = ref(false)
+const loading = ref(true)
+
+let unsubscribeSnapshot = null
 
 const fetchEvents = () => {
-  const q = query(collection($db, "events"), orderBy("date", "asc"));
-  const today = new Date().toISOString().slice(0, 10);
+  const q = query(collection($db, 'events'), orderBy('date', 'asc'))
+  const today = new Date().toISOString().slice(0, 10)
 
-  onSnapshot(q, (snapshot) => {
-    const allEvents = snapshot.docs.map((d) => ({
-      id: d.id,
-      ...d.data(),
-    }));
+  unsubscribeSnapshot = onSnapshot(q, (snapshot) => {
+    const allEvents = snapshot.docs.map((d) => ({ id: d.id, ...d.data() }))
+    upcomingEvents.value = allEvents.filter(
+      (event) => (event.endDate || event.date) >= today,
+    )
+    loading.value = false
+    nextTick(updateArrows)
+  })
+}
 
-    upcomingEvents.value = allEvents.filter((event) => event.date >= today);
+const weekdays = ['Su', 'Ma', 'Ti', 'Ke', 'To', 'Pe', 'La']
 
-    // päivitä nuolien näkyvyys kun DOM on valmis
-    nextTick(() => {
-      updateArrows();
-    });
-  });
-};
-
-const formatDate = (dateString) => {
-  if (!dateString) return "";
-  const [year, month, day] = dateString.split("-");
-  return `${day}.${month}.${year}`;
-};
+const formatDateRange = (startString, endString) => {
+  if (!startString) return ''
+  const [sy, sm, sd] = startString.split('-')
+  const startDate = new Date(Number(sy), Number(sm) - 1, Number(sd))
+  const weekday = weekdays[startDate.getDay()]
+  if (!endString) return `${weekday} ${sd}.${sm}.${sy}`
+  const [ey, em, ed] = endString.split('-')
+  if (sm === em && sy === ey) return `${weekday} ${sd}.–${ed}.${em}.${ey}`
+  if (sy === ey) return `${weekday} ${sd}.${sm}.–${ed}.${em}.${ey}`
+  return `${weekday} ${sd}.${sm}.${sy}–${ed}.${em}.${ey}`
+}
 
 const updateArrows = () => {
-  if (!eventList.value) return;
-  const el = eventList.value;
-  showLeft.value = el.scrollLeft > 0;
-  showRight.value = el.scrollLeft + el.clientWidth < el.scrollWidth;
-};
+  if (!eventList.value) return
+  const el = eventList.value
+  showLeft.value = el.scrollLeft > 0
+  showRight.value = el.scrollLeft + el.clientWidth < el.scrollWidth - 1
+}
 
 const scrollEvents = (direction) => {
-  if (!eventList.value) return;
-  const scrollAmount = eventList.value.clientWidth * 0.9;
-  if (direction === "left") {
-    eventList.value.scrollLeft -= scrollAmount;
-  } else {
-    eventList.value.scrollLeft += scrollAmount;
-  }
-  setTimeout(updateArrows, 300);
-};
+  if (!eventList.value) return
+  const scrollAmount = eventList.value.clientWidth * 0.9
+  eventList.value.scrollLeft +=
+    direction === 'left' ? -scrollAmount : scrollAmount
+  setTimeout(updateArrows, 300)
+}
 
 onMounted(() => {
-  fetchEvents();
-  eventList.value?.addEventListener("scroll", updateArrows);
-});
+  fetchEvents()
+  nextTick(() => {
+    eventList.value?.addEventListener('scroll', updateArrows)
+  })
+})
+
+onUnmounted(() => {
+  unsubscribeSnapshot?.()
+  eventList.value?.removeEventListener('scroll', updateArrows)
+})
 </script>
 
 <style scoped>
+.event-date {
+  font-style: italic;
+  color: #555;
+  margin: 0.5rem 0;
+}
+
 .events-container {
   width: 100%;
 }
@@ -137,25 +161,90 @@ onMounted(() => {
   display: flex;
   flex-direction: row;
   gap: 1.5rem;
-
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
-  padding-bottom: 1rem;
+  padding: 0.5rem 0rem 1rem;
 }
 
 .event-item {
   flex: 0 0 100%;
   scroll-snap-align: start;
-
   padding: 1.5rem;
   border: 1px solid #ccc;
   border-radius: 8px;
   background-color: white;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+}
+
+/* Nuolipainikkeet sivuilla */
+.arrow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+}
+
+.arrow-left {
+  left: 0;
+}
+.arrow-right {
+  right: 0;
+}
+
+.arrow-btn {
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  padding: 0.2rem;
+  cursor: pointer;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.arrow-btn:hover {
+  background: #f5f5f5;
+}
+
+/* Skeleton loader */
+.skeleton {
+  pointer-events: none;
+}
+
+.skeleton-line {
+  background: linear-gradient(90deg, #e0e0e0 25%, #f5f5f5 50%, #e0e0e0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+}
+
+.skeleton-title {
+  height: 1.4rem;
+  width: 60%;
+}
+.skeleton-date {
+  height: 1rem;
+  width: 35%;
+}
+.skeleton-desc {
+  height: 3rem;
+  width: 90%;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
 }
 </style>
